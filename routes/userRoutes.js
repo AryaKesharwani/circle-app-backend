@@ -87,7 +87,7 @@ router.post("/login", async (req, res) => {
     }
 
     const token = await user.generateAuthToken();
-    res.json({ token, isPayer: user.isPayer });
+    res.json({ token, isPayer: user.isPayer, role: user.role });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
