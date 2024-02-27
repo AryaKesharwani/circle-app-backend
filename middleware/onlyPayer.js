@@ -14,18 +14,17 @@ const isPayerMiddleware=async (req, res, next)=> {
     // Verify token (replace with your actual token verification logic)
     const decoded = jwt.verify(token, process.env.JWT_SECRET); 
 
-    const user = await User.findById(decoded._id);
+    req.user = await User.findById(decoded._id);
 
     // Check if user is a payer based on the decoded token data
     // if (!decoded.isPayer) {
     //   return res.status(403).json({ error: 'Forbidden (not a payer)' });
     // }
 
-    console.log(user.isPayer)
-    if(user.isPayer==false){
+    console.log(user.role)
+    if(req.user.role=='payer'){
       return res.status(403).json({ error: 'Forbidden (not a payer)' });
     }
-    req.user = user;
 
     // User is a payer, proceed to the next middleware or route handler
     next();
