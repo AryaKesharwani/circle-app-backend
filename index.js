@@ -3,18 +3,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 require("dotenv").config();
-const mongoose = require('mongoose');
+const db = require("./config");
 
-
-mongoose.connect('mongodb+srv://yadvji568:bStvDgqSufO3hRde@cluster0.0irc8nf.mongodb.net/', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log("Connected to MongoDB");
-});
 
 // middleware
 const verifyAuthToken = require("./middleware/verifyAuthToken");
