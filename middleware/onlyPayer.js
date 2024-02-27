@@ -21,7 +21,7 @@ const isPayerMiddleware=async (req, res, next)=> {
     //   return res.status(403).json({ error: 'Forbidden (not a payer)' });
     // }
 
-    if(!user.isPayer){
+    if(user.isPayer===false){
       return res.status(403).json({ error: 'Forbidden (not a payer)' });
     }
     req.user = user;
