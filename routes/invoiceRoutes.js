@@ -147,6 +147,8 @@ router.get('show-invoice', verifyAuthToken, async (req, res) => {
     }
 });  
 
+
+// updating the invoice status to paid
 router.put('/invoices/:id/paid', verifyAuthToken, async (req, res) => {
 
     const invoiceId = req.params.id;
