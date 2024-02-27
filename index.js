@@ -1,14 +1,27 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 require("dotenv").config();
+const mongoose = require('mongoose');
+
+
+mongoose.connect('mongodb+srv://yadvji568:bStvDgqSufO3hRde@cluster0.0irc8nf.mongodb.net/', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log("Connected to MongoDB");
+});
 
 // middleware
 const verifyAuthToken = require("./middleware/verifyAuthToken");
 
 const app = express();
 const port = process.env.PORT || 3000;
-
+app.use(cors());
 app.use(bodyParser.json());
 
 const userRoutes = require("./routes/userRoutes");
@@ -55,7 +68,5 @@ app.get("/my-invoices", verifyAuthToken, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
-
 
 app.listen(port, () => console.log(`Server listening on port ${port}`));

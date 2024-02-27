@@ -1,4 +1,5 @@
 const express = require("express");
+const bcrypt = require('bcryptjs'); 
 const router = express.Router();
 
 // models
@@ -75,14 +76,14 @@ router.post("/create-payee", onlyPayer ,async (req, res) => {
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email });
     if (!user) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid email" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid password" });
     }
 
     const token = await user.generateAuthToken();
