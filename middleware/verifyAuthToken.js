@@ -10,7 +10,7 @@ const verifyAuthToken = async (req, res, next) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify token using secret key
+    const decoded = jwt.verify(token.replace(/['"]+/g, ""), process.env.JWT_SECRET); // Verify token using secret key
     req.user = await User.findById(decoded._id); // Make user information available in the request object
     next();
   } catch (err) {
