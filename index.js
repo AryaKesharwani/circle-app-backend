@@ -48,15 +48,6 @@ app.post("/invoices", verifyAuthToken, async (req, res) => {
   }
 });
 
-app.get("/my-invoices", verifyAuthToken, async (req, res) => {
-  const userId = req.user._id; // Get user ID from the logged-in user
 
-  try {
-    const invoices = await Invoice.find({ payer: userId }); // Filter invoices based on payer ID
-    res.json(invoices);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
 
 app.listen(port, () => console.log(`Server listening on port ${port}`));
