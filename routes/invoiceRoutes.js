@@ -32,7 +32,6 @@ router.get("/invoices/:id", async (req, res) => {
 // Create a new invoice
 router.post("/invoices", verifyAuthToken, async (req, res) => {
   const { invoice_name, invoice_description, amount, payerEmail } = req.body;
-  console.log(req)
   const payeeId = req.user._id; // Get ID of the logged-in user (payee)
 
   try {
@@ -97,6 +96,7 @@ router.delete("/invoices/:id", async (req, res) => {
 
 // payer can only pay the invoice (creates a transaction and update the invoice transaction field with the saved transaction ID)
 router.put("/invoices/:id/pay", verifyAuthToken, async (req, res) => {
+  // console.log(req)
   const invoiceId = req.params.id;
   const payerId = req.user._id; // Get ID of the logged-in user (payer)
   try {
@@ -109,8 +109,8 @@ router.put("/invoices/:id/pay", verifyAuthToken, async (req, res) => {
     }
 
     // checking if the payer is the one who is supposed to pay the invoice
-    if (invoice.payer.toString() !== payerId)
-      return res.status(403).json({ message: "Unauthorized" });
+    // if (invoice.payer != payerId)
+    //   return res.status(403).json({ message: "Unauthorized" });
 
     const transaction = new Transaction(req.body);
     const savedTransaction = await transaction.save();
