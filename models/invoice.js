@@ -11,7 +11,7 @@ const invoiceSchema = new mongoose.Schema({
     chain_number: { type: Number, required: true },
     chain_name: { type: String, required: true },
   },
-  status: { type: String, required: true, default: 'pending' }, // pending, paid
+  status: { type: String, required: true, default: 'pending' }, // pending, processing, paid
   transaction: { type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }, // Reference to the transaction
 });
 
