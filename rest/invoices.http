@@ -1,0 +1,14 @@
+
+
+
+### GET request - To get all the invoices
+GET http://localhost:3000/invoices HTTP/1.1
+
+
+
+
+### GET request -
+GET http://localhost:3000/invoices/65df8b8eaf51b08f664d10c1/transaction HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NWRmNzMxOGE5ZmIzOWUwZWJkMjk4ZTMiLCJpYXQiOjE3MDkxOTE3MDgsImV4cCI6MTcwOTE5NTMwOH0.14ASMM74RhCXz5xaEf_KhZG-iw_YQCPE-jHMDGO0mUg
+
