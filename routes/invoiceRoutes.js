@@ -118,6 +118,9 @@ router.put("/invoices/:id/pay", verifyAuthToken, async (req, res) => {
     // Update the invoice transaction field with the saved transaction ID
     invoice.transaction = savedTransaction._id;
 
+    // update the invoice status to processing
+    invoice.status = "processing";
+
     // Save the updated invoice
     await invoice.save();
 
@@ -140,7 +143,7 @@ router.get('show-invoice', verifyAuthToken, async (req, res) => {
       const invoices = await Invoice.find({ payer: userId }); // Filter invoices based on payer ID
       res.json(invoices);
     } else {
-      const invoices = await Invoice.find({ payee: userId });
+      const invoices = await Invoice.find({ payee: userId }); // Filter invoices based on payee ID
       res.json(invoices);
     }
   } catch (err) {
@@ -163,8 +166,8 @@ router.put('/invoices/:id/paid', verifyAuthToken, async (req, res) => {
     }
 
     // checking if the payer is the one who is supposed to pay the invoice
-    if (invoice.payer.toString() !== req.user._id)
-      return res.status(403).json({ message: "Unauthorized" });
+    // if (invoice.payer.toString() !== req.user._id)
+    //   return res.status(403).json({ message: "Unauthorized" });
 
 
     // Update the invoice status to "paid"
@@ -179,6 +182,25 @@ router.put('/invoices/:id/paid', verifyAuthToken, async (req, res) => {
   }
 
 });
+
+// Get the transaction details for a specific invoice
+router.get('/invoices/:id/transaction', verifyAuthToken, async (req, res) => {
+  const invoiceId = req.params.id;
+  try {
+    const invoice = await Invoice.findById(invoiceId);
+    if (!invoice) {
+      return res.status(404).json({ message: "Invoice not found" });
+    }
+    const transaction = await Transaction.findById(invoice.transaction);
+    if (!transaction) {
+      return res.status(404).json({ message: "Transaction not found" });
+    }
+    res.json(transaction);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+);
 
 
 module.exports = router;
